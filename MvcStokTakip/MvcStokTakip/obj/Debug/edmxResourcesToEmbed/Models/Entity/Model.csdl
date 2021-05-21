@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="mvcSiteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tabloKategoriler">
+    <Key>
+      <PropertyRef Name="kategoriId" />
+    </Key>
+    <Property Name="kategoriId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kategoriAd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tabloUrunler" Relationship="Self.FK_tabloUrunler_tabloKategoriler" FromRole="tabloKategoriler" ToRole="tabloUrunler" />
+  </EntityType>
+  <EntityType Name="tabloMusteriler">
+    <Key>
+      <PropertyRef Name="musteriId" />
+    </Key>
+    <Property Name="musteriId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="musteriAd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="musteriSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="tabloSatis" Relationship="Self.FK_tabloSatis_tabloMusteriler" FromRole="tabloMusteriler" ToRole="tabloSatis" />
+  </EntityType>
+  <EntityType Name="tabloSatis">
+    <Key>
+      <PropertyRef Name="satisId" />
+    </Key>
+    <Property Name="satisId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="urun" Type="Int32" />
+    <Property Name="musteri" Type="Int32" />
+    <Property Name="adet" Type="Int16" />
+    <Property Name="fiyat" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="tabloMusteriler" Relationship="Self.FK_tabloSatis_tabloMusteriler" FromRole="tabloSatis" ToRole="tabloMusteriler" />
+    <NavigationProperty Name="tabloUrunler" Relationship="Self.FK_tabloSatis_tabloUrunler" FromRole="tabloSatis" ToRole="tabloUrunler" />
+  </EntityType>
+  <EntityType Name="tabloUrunler">
+    <Key>
+      <PropertyRef Name="urunId" />
+    </Key>
+    <Property Name="urunId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="urunAd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="marka" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="urunKategori" Type="Int16" />
+    <Property Name="fiyat" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="stok" Type="Int32" />
+    <NavigationProperty Name="tabloKategoriler" Relationship="Self.FK_tabloUrunler_tabloKategoriler" FromRole="tabloUrunler" ToRole="tabloKategoriler" />
+    <NavigationProperty Name="tabloSatis" Relationship="Self.FK_tabloSatis_tabloUrunler" FromRole="tabloUrunler" ToRole="tabloSatis" />
+  </EntityType>
+  <Association Name="FK_tabloUrunler_tabloKategoriler">
+    <End Role="tabloKategoriler" Type="Self.tabloKategoriler" Multiplicity="0..1" />
+    <End Role="tabloUrunler" Type="Self.tabloUrunler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabloKategoriler">
+        <PropertyRef Name="kategoriId" />
+      </Principal>
+      <Dependent Role="tabloUrunler">
+        <PropertyRef Name="urunKategori" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tabloSatis_tabloMusteriler">
+    <End Role="tabloMusteriler" Type="Self.tabloMusteriler" Multiplicity="0..1" />
+    <End Role="tabloSatis" Type="Self.tabloSatis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabloMusteriler">
+        <PropertyRef Name="musteriId" />
+      </Principal>
+      <Dependent Role="tabloSatis">
+        <PropertyRef Name="musteri" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tabloSatis_tabloUrunler">
+    <End Role="tabloUrunler" Type="Self.tabloUrunler" Multiplicity="0..1" />
+    <End Role="tabloSatis" Type="Self.tabloSatis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabloUrunler">
+        <PropertyRef Name="urunId" />
+      </Principal>
+      <Dependent Role="tabloSatis">
+        <PropertyRef Name="urun" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="mvcSiteEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="tabloKategoriler" EntityType="Self.tabloKategoriler" />
+    <EntitySet Name="tabloMusteriler" EntityType="Self.tabloMusteriler" />
+    <EntitySet Name="tabloSatis" EntityType="Self.tabloSatis" />
+    <EntitySet Name="tabloUrunler" EntityType="Self.tabloUrunler" />
+    <AssociationSet Name="FK_tabloUrunler_tabloKategoriler" Association="Self.FK_tabloUrunler_tabloKategoriler">
+      <End Role="tabloKategoriler" EntitySet="tabloKategoriler" />
+      <End Role="tabloUrunler" EntitySet="tabloUrunler" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tabloSatis_tabloMusteriler" Association="Self.FK_tabloSatis_tabloMusteriler">
+      <End Role="tabloMusteriler" EntitySet="tabloMusteriler" />
+      <End Role="tabloSatis" EntitySet="tabloSatis" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tabloSatis_tabloUrunler" Association="Self.FK_tabloSatis_tabloUrunler">
+      <End Role="tabloUrunler" EntitySet="tabloUrunler" />
+      <End Role="tabloSatis" EntitySet="tabloSatis" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="mvcSiteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tabloKategoriler">
+    <Key>
+      <PropertyRef Name="kategoriId" />
+    </Key>
+    <Property Name="kategoriId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="kategoriAd" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tabloMusteriler">
+    <Key>
+      <PropertyRef Name="musteriId" />
+    </Key>
+    <Property Name="musteriId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="musteriAd" Type="varchar" MaxLength="50" />
+    <Property Name="musteriSoyad" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tabloSatis">
+    <Key>
+      <PropertyRef Name="satisId" />
+    </Key>
+    <Property Name="satisId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="urun" Type="int" />
+    <Property Name="musteri" Type="int" />
+    <Property Name="adet" Type="smallint" />
+    <Property Name="fiyat" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="tabloUrunler">
+    <Key>
+      <PropertyRef Name="urunId" />
+    </Key>
+    <Property Name="urunId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="urunAd" Type="varchar" MaxLength="50" />
+    <Property Name="marka" Type="varchar" MaxLength="50" />
+    <Property Name="urunKategori" Type="smallint" />
+    <Property Name="fiyat" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="stok" Type="int" />
+  </EntityType>
+  <Association Name="FK_tabloSatis_tabloMusteriler">
+    <End Role="tabloMusteriler" Type="Self.tabloMusteriler" Multiplicity="0..1" />
+    <End Role="tabloSatis" Type="Self.tabloSatis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabloMusteriler">
+        <PropertyRef Name="musteriId" />
+      </Principal>
+      <Dependent Role="tabloSatis">
+        <PropertyRef Name="musteri" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tabloSatis_tabloUrunler">
+    <End Role="tabloUrunler" Type="Self.tabloUrunler" Multiplicity="0..1" />
+    <End Role="tabloSatis" Type="Self.tabloSatis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabloUrunler">
+        <PropertyRef Name="urunId" />
+      </Principal>
+      <Dependent Role="tabloSatis">
+        <PropertyRef Name="urun" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tabloUrunler_tabloKategoriler">
+    <End Role="tabloKategoriler" Type="Self.tabloKategoriler" Multiplicity="0..1" />
+    <End Role="tabloUrunler" Type="Self.tabloUrunler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tabloKategoriler">
+        <PropertyRef Name="kategoriId" />
+      </Principal>
+      <Dependent Role="tabloUrunler">
+        <PropertyRef Name="urunKategori" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="mvcSiteModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabloKategoriler" EntityType="Self.tabloKategoriler" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabloMusteriler" EntityType="Self.tabloMusteriler" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabloSatis" EntityType="Self.tabloSatis" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tabloUrunler" EntityType="Self.tabloUrunler" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tabloSatis_tabloMusteriler" Association="Self.FK_tabloSatis_tabloMusteriler">
+      <End Role="tabloMusteriler" EntitySet="tabloMusteriler" />
+      <End Role="tabloSatis" EntitySet="tabloSatis" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tabloSatis_tabloUrunler" Association="Self.FK_tabloSatis_tabloUrunler">
+      <End Role="tabloUrunler" EntitySet="tabloUrunler" />
+      <End Role="tabloSatis" EntitySet="tabloSatis" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tabloUrunler_tabloKategoriler" Association="Self.FK_tabloUrunler_tabloKategoriler">
+      <End Role="tabloKategoriler" EntitySet="tabloKategoriler" />
+      <End Role="tabloUrunler" EntitySet="tabloUrunler" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

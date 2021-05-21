@@ -1,0 +1,17 @@
+﻿@model MvcStokTakip.Models.Entity.tabloKategoriler
+@{
+    ViewBag.Title = "yeniKategori";
+    Layout = "~/Views/Shared/_mainLayout.cshtml";
+}
+
+<form class="form-group" method="post">
+    <div>
+        <label>Kategori Adı:</label>
+        @Html.TextBoxFor(a => a.kategoriAd, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.kategoriAd, "", new { @style = "color:red" })
+    </div>
+    <div style="margin-top:15px">
+        <button class="btn btn-info">Kategori Ekle</button>
+    </div>
+</form>
+

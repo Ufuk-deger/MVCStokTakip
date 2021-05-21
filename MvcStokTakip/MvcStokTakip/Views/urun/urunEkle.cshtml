@@ -1,0 +1,31 @@
+﻿@model MvcStokTakip.Models.Entity.tabloUrunler
+@{
+    ViewBag.Title = "urunEkle";
+    Layout = "~/Views/Shared/_mainLayout.cshtml";
+}
+
+<form class="form-group" method="post">
+    <div>
+        <label>Ürün Ad:</label>
+        <input type="text" name="urunAd" class="form-control" required maxlength="30"/>
+    </div>
+    <div>
+        <label>Marka:</label>
+        <input type="text" name="marka" class="form-control" required maxlength="30"/>
+    </div>
+    <div>
+        <label>Kategori:</label>
+        @Html.DropDownListFor(a => a.tabloKategoriler.kategoriId, (List<SelectListItem>)ViewBag.cmbDoldur, new {@class="form-control"})
+    </div>
+    <div>
+        <label>Fiyat:</label>
+        <input type="text" name="fiyat" class="form-control" required />
+    </div>
+    <div>
+        <label>Stok:</label>
+        <input type="text" name="stok" class="form-control" required/>
+    </div>
+    <div style="margin-top:15px">
+        <button class="btn btn-info">Ürün Ekle</button>
+    </div>
+</form>
